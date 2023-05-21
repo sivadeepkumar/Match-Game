@@ -1,0 +1,25 @@
+nav {
+}
+
+.nav-container {
+  padding: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: goldenrod;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+.timer-logo {
+  padding-left: 20px;
+  margin-right: 5px;
+  width: 60px;
+  height: 30px;
+}
+.app-logo {
+  width: 200px;
+}
