@@ -20,7 +20,7 @@ const NavBar = props => {
             alt="timer"
             className="timer-logo"
           />
-          <p>{sixtySecond}</p>
+          <p>{`${sixtySecond} sec`}</p>
         </div>
       </div>
     </nav>

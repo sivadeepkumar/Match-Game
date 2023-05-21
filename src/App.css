@@ -48,3 +48,36 @@ body {
   width: 128px;
   height: 30px;
 }
+
+.second-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab-list {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  padding: 0;
+}
+.liElement {
+  padding-right: 10px;
+}
+
+.img-size {
+  width: 100px;
+  height: 100px;
+}
+
+.image-ul-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  list-style-type: none;
+}
+
+.high-Light {
+  text-decoration: underline;
+  background-color: goldenrod;
+}

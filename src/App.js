@@ -249,13 +249,28 @@ const imagesList = [
     category: 'FRUIT',
   },
 ]
-console.log(tabsList, imagesList)
 
 // Replace your code here
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {score: 0, sixtySecond: 5, popUp: false}
+    this.state = {
+      slot: tabsList[0].tabId,
+      score: 0,
+      sixtySecond: 60,
+      popUp: false,
+      randomImg:
+        imagesList[Math.floor(Math.random() * imagesList.length)].imageUrl,
+    }
+  }
+
+  changeSlot = tabId => {
+    this.setState({slot: tabId})
+  }
+
+  asPerSlotChangeImage = slot => {
+    const selectedComb = imagesList.filter(each => each.category === slot)
+    return selectedComb
   }
 
   playAgain = async () => {
@@ -264,7 +279,7 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    this.clearId = await setInterval(this.tick, 100)
+    this.clearId = await setInterval(this.tick, 1000)
   }
 
   tick = () => {
@@ -283,9 +298,22 @@ class App extends Component {
     console.log(popUp)
   }
 
-  render() {
-    const {score, sixtySecond, popUp} = this.state
+  selectedImg = imageUrl => {
+    const {randomImg} = this.state
+    if (imageUrl === randomImg) {
+      this.setState(prevState => ({score: prevState.score + 1}))
+      const newRandom = Math.floor(Math.random() * imagesList.length)
+      const lastIndex = imagesList.length
+      console.log(newRandom, lastIndex)
+      this.setState({randomImg: imagesList[newRandom].imageUrl, sixtySecond: 0})
+    } else {
+      this.componentWillUnmount()
+    }
+  }
 
+  render() {
+    const {score, sixtySecond, popUp, slot, randomImg} = this.state
+    const categerySelected = this.asPerSlotChangeImage(slot)
     return (
       <div>
         <div className="main-container">
@@ -314,11 +342,68 @@ class App extends Component {
               </div>
             </div>
           )}
-          {!popUp && null}
+          {!popUp && (
+            <div className="second-container">
+              <div>
+                <img src={randomImg} alt="random-altName" />
+                <ul className="tab-list">
+                  {tabsList.map(each => (
+                    <Slot
+                      key={each.tabId}
+                      eachItem={each}
+                      changeSlot={this.changeSlot}
+                      isActive={slot === each.tabId}
+                    />
+                  ))}
+                </ul>
+
+                <ul className="image-ul-container">
+                  {categerySelected.map(each => (
+                    <ImageItem
+                      key={each.id}
+                      eachItem={each}
+                      selectedImg={this.selectedImg}
+                    />
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     )
   }
+}
+
+const Slot = props => {
+  const {eachItem, changeSlot, isActive} = props
+  const {displayText, tabId} = eachItem
+  const highLight = isActive ? 'high-Light' : null
+  const slotClicked = () => {
+    changeSlot(tabId)
+  }
+
+  return (
+    <li onClick={slotClicked} className="liElement">
+      <p className={highLight}>{displayText}</p>
+    </li>
+  )
+}
+
+const ImageItem = props => {
+  const {eachItem, selectedImg} = props
+  //  const {imageUrl, id, thumbnailUrl} = eachItem
+  const {imageUrl} = eachItem
+
+  const OnClickImg = () => {
+    selectedImg(imageUrl)
+  }
+
+  return (
+    <li onClick={OnClickImg}>
+      <img className="img-size" src={imageUrl} alt="imageName" />
+    </li>
+  )
 }
 
 export default App
